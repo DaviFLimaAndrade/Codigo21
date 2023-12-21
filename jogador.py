@@ -1,9 +1,10 @@
 class Jogador:
-    def __init__(self, nome, saldo, pontos, mao):
+    def __init__(self, nome, saldo, pontos):
         self.nome = nome
         self.saldo = saldo
         self.pontos = pontos
-        self.mao = mao
+        self.mao = []
+
 
     def get_nome(self):
         return self.nome
@@ -16,8 +17,12 @@ class Jogador:
 
     def set_mao(self, mao_jogador):
         self.mao = mao_jogador
-        return self.mao
 
     def get_mao(self):
-        print(f"Sua mão é: {self.mao}")
+        return self.mao
+
+
+
+
+
 
