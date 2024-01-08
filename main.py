@@ -2,7 +2,6 @@ import random
 from jogador import Jogador
 
 
-
 def criar_jogadores():
     quantidade_jogadores = int(input("Insira quantos jogadores vamos acomodar: "))
     jogadores = []
@@ -48,10 +47,36 @@ def realizar_apostas(jogadores):
         print("Insira um numero inteiro")
 
 
-def jogo(jogadores):
-    cartas = [10]
-    mao_jogador = []
+def sortear(jogadores):
 
+
+    cartas = [10]
+    j = 0
+
+    while j < jogadores.__len__():
+        # fazer uma verificação no input
+        for jogador in jogadores:
+            opcao = int(input(f"{jogador.get_nome()}, Deseja comprar mais cartas? "
+                              "\n1: Sim"
+                              "\n2: Não"
+                              "\nDigite: "))
+
+            carta = random.choice(cartas)
+            mao_jogador = jogador.get_mao()  # um dos erros que enfrentei foi porque o append so funciona se o valor
+            mao_jogador.append(carta)  # da lista estiver zerado
+            jogador.set_mao(mao_jogador)
+            mao_atual = sum(jogador.get_mao())
+            int(mao_atual)  # aqui eu converto como int para fazer a comparação lógica no if
+
+            print('-' * 80)
+            print(f"{jogador.get_nome()} sua mão é: {jogador.set_mao()}")
+            print('-' * 80)
+
+        j += 1
+
+global mao_atual
+
+def jogo(jogadores):
     print('''             __   __      ________       ___ __ __      ______       ______              __           ________      
             /_/\ /_/\    /_______/\     /__//_//_/\    /_____/\     /_____/\             /_/\         /_______/\     
             \:\ \\ \ \   \::: _  \ \    \::\| \| \ \   \:::_ \ \    \::::_\/_            \:\ \        \::: _  \ \    
@@ -59,38 +84,13 @@ def jogo(jogadores):
               \:\_/.:\ \   \:: __  \ \    \:.\-/\  \ \   \:\ \ \ \    \_::._\:\            \:\ \____    \:: __  \ \  
                \ ..::/ /    \:.\ \  \ \    \. \  \  \ \   \:\_\ \ \     /____\:\            \:\/___/\    \:.\ \  \ \ 
                 \___/_(      \__\/\__\/     \__\/ \__\/    \_____\/     \_____\/             \_____\/     \__\/\__\/ 
-             
-                                                                                                 ''')
-    jogada = True
-    contador = 0
-    while jogada == True:
-        try:
-            for jogador in jogadores:
-                opcao = int(input(f"{jogador.get_nome()}, Deseja comprar mais cartas? "
-                                  "\n1: Sim"
-                                  "\n2: Não"
-                                  "\nDigite: "))
+                                                                                             ''')
+    sortear(jogadores)
+    nome = Jogador.get_nome()
 
-                carta = random.choice(cartas)
-                mao_jogador = jogador.get_mao()  # um dos erros que enfrentei foi porque o append so funciona se o valor
-                mao_jogador.append(carta)  # da lista estiver zerado
-                jogador.set_mao(mao_jogador)
-                mao_atual = sum(jogador.get_mao())
-                int(mao_atual) # aqui eu converto como int para fazer a comparação lógica no if
+    if mao_atual < 21:
+        print(f"")
 
-                if opcao == 1 and mao_atual < 21:
-                    var = contador + 1
-                    print('-'*80)
-                    print(f"{jogador.get_nome()} sua mão é: {mao_atual}")
-                    print('-'*80)
-                elif mao_atual > 21:
-                    print(f"{jogador.get_nome()} Você ganhou {mao_atual}")
-                    jogada = False
-                    break
-                else:
-                    print("olalalallalalalalalalala")
-        except ValueError:
-            print("Insira um numero inteiro por favor")
 
 
 if __name__ == "__main__":

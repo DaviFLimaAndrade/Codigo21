@@ -22,7 +22,3 @@ class Jogador:
         return self.mao
 
 
-
-
-
-
