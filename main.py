@@ -1,4 +1,4 @@
-import random
+
 from jogador import Jogador
 
 
@@ -47,53 +47,60 @@ def realizar_apostas(jogadores):
         print("Insira um numero inteiro")
 
 
-def sortear(jogadores):
+import random
 
 
-    cartas = [10]
-    j = 0
+def sorteio_e_vencedores(jogadores):
+    cartas = [2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10, 11]
 
-    while j < jogadores.__len__():
-        # fazer uma verificação no input
+    pontuacoes_validas = {}
+    todos_pararam = False
+
+    while not todos_pararam:
+        todos_pararam = True  # Supõe que todos pararam, mas verificamos abaixo
+
         for jogador in jogadores:
+            mao_jogador = jogador.get_mao()
+
+            print(f"{jogador.get_nome()}, sua mão inicial é: {mao_jogador}")
+
             opcao = int(input(f"{jogador.get_nome()}, Deseja comprar mais cartas? "
                               "\n1: Sim"
                               "\n2: Não"
                               "\nDigite: "))
 
-            carta = random.choice(cartas)
-            mao_jogador = jogador.get_mao()  # um dos erros que enfrentei foi porque o append so funciona se o valor
-            mao_jogador.append(carta)  # da lista estiver zerado
-            jogador.set_mao(mao_jogador)
-            mao_atual = sum(jogador.get_mao())
-            int(mao_atual)  # aqui eu converto como int para fazer a comparação lógica no if
+            if opcao == 1:
+                carta = random.choice(cartas)
+                mao_jogador.append(carta)
+                jogador.set_mao(mao_jogador)
 
-            print('-' * 80)
-            print(f"{jogador.get_nome()} sua mão é: {jogador.set_mao()}")
-            print('-' * 80)
+                total_mao = sum(mao_jogador)
+                print(f"{jogador.get_nome()}, sua mão atual é: {mao_jogador}")
 
-        j += 1
+                if total_mao > 21:
+                    break  # Encerra o loop se a pontuação ultrapassar 21
+                pontuacoes_validas[jogador.get_nome()] = total_mao
 
-global mao_atual
+                todos_pararam = False  # Se alguém comprou, definimos como False
 
-def jogo(jogadores):
-    print('''             __   __      ________       ___ __ __      ______       ______              __           ________      
-            /_/\ /_/\    /_______/\     /__//_//_/\    /_____/\     /_____/\             /_/\         /_______/\     
-            \:\ \\ \ \   \::: _  \ \    \::\| \| \ \   \:::_ \ \    \::::_\/_            \:\ \        \::: _  \ \    
-             \:\ \\ \ \   \::(_)  \ \    \:.      \ \   \:\ \ \ \    \:\/___/\            \:\ \        \::(_)  \ \   
-              \:\_/.:\ \   \:: __  \ \    \:.\-/\  \ \   \:\ \ \ \    \_::._\:\            \:\ \____    \:: __  \ \  
-               \ ..::/ /    \:.\ \  \ \    \. \  \  \ \   \:\_\ \ \     /____\:\            \:\/___/\    \:.\ \  \ \ 
-                \___/_(      \__\/\__\/     \__\/ \__\/    \_____\/     \_____\/             \_____\/     \__\/\__\/ 
-                                                                                             ''')
-    sortear(jogadores)
-    nome = Jogador.get_nome()
+    if not pontuacoes_validas:
+        print("Todos os jogadores ultrapassaram 21! Não há vencedor nesta rodada.")
+    else:
+        pontuacao_maxima = max(pontuacoes_validas.values())
+        vencedores = [nome for nome, pontuacao in pontuacoes_validas.items() if pontuacao == pontuacao_maxima]
 
-    if mao_atual < 21:
-        print(f"")
+        if len(vencedores) == 1:
+            print(f"{vencedores[0]} venceu com {pontuacao_maxima} pontos!")
+        else:
+            print("Empate! Os vencedores são:")
+            for vencedor in vencedores:
+                print(f"- {vencedor} com {pontuacao_maxima} pontos")
 
+
+# Restante do código para criar jogadores, realizar apostas, etc.
 
 
 if __name__ == "__main__":
     jogadores = criar_jogadores()
     realizar_apostas(jogadores)
-    jogo(jogadores)
+    sorteio_e_vencedores(jogadores)
