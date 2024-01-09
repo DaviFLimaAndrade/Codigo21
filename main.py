@@ -1,4 +1,3 @@
-
 from jogador import Jogador
 
 
@@ -41,6 +40,9 @@ def realizar_apostas(jogadores):
                 print('-' * 60)
                 print(f"Você comprou {fichas_comprar} fichas.")
                 print(f"Agora você tem {fichas_comprar * 10} fichas e {jogador.get_saldo()} klebinhos restantes.")
+                print(""
+                      ""
+                      "")
             else:
                 print("Saldo insuficiente para comprar essa quantidade de fichas.")
     except ValueError:
@@ -52,16 +54,18 @@ import random
 
 def sorteio_e_vencedores(jogadores):
     cartas = [2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10, 11]
-
+    total_mao = 0
     pontuacoes_validas = {}
     todos_pararam = False
+    contador = 1
+
 
     while not todos_pararam:
         todos_pararam = True  # Supõe que todos pararam, mas verificamos abaixo
 
         for jogador in jogadores:
             mao_jogador = jogador.get_mao()
-
+            # tem que começar com 2 cartas
             print(f"{jogador.get_nome()}, sua mão inicial é: {mao_jogador}")
 
             opcao = int(input(f"{jogador.get_nome()}, Deseja comprar mais cartas? "
@@ -69,19 +73,25 @@ def sorteio_e_vencedores(jogadores):
                               "\n2: Não"
                               "\nDigite: "))
 
-            if opcao == 1:
+            if opcao == 1 and total_mao <= 21:
                 carta = random.choice(cartas)
                 mao_jogador.append(carta)
                 jogador.set_mao(mao_jogador)
 
                 total_mao = sum(mao_jogador)
-                print(f"{jogador.get_nome()}, sua mão atual é: {mao_jogador}")
+                print(f"{jogador.get_nome()}, sua mão atual é: {total_mao}")
 
-                if total_mao > 21:
-                    break  # Encerra o loop se a pontuação ultrapassar 21
                 pontuacoes_validas[jogador.get_nome()] = total_mao
-
                 todos_pararam = False  # Se alguém comprou, definimos como False
+                print(pontuacoes_validas)
+                contador += 1
+
+
+            if total_mao > 21 and contador == 2:
+                pass
+            elif total_mao > 21 and contador > 2:
+                todos_pararam = True
+                break
 
     if not pontuacoes_validas:
         print("Todos os jogadores ultrapassaram 21! Não há vencedor nesta rodada.")
