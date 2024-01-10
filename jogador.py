@@ -3,34 +3,38 @@ import random
 class Jogador:
     def __init__(self, nome, saldo, pontos):
         self.nome = nome
-        self.saldo = saldo
+        self._saldo = saldo
         self.pontos = pontos
-        self.mao = self.sorteio()
+        self._mao = self.sorteio()
 
+    @property
+    def nome(self):
+        return self._nome
 
-    def get_nome(self):
-        return self.nome
+    @nome.setter
+    def nome(self, novo_nome):
+        self._nome = novo_nome
+
+    @property
+    def saldo(self):
+        return self._saldo
+
+    @property
+    def mao(self):
+        return self._mao
+
+    @saldo.setter
+    def saldo(self, novo_saldo):
+        self._saldo = novo_saldo
 
     def sorteio(self):
-        cartas = [2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10, 11]
+        baralho = {'A': 1, 'Q': 10, 'J': 10, 'K': 10,
+                   '2': 2, '3': 3, '4': 4, '5': 5, '6': 6,
+                   '7': 7, '8': 8, '9': 9}
         mao = []
 
         for i in range(2):
-            carta = random.choice(cartas)
+            carta = random.choice(list(baralho.values()))
             mao.append(carta)
 
         return mao
-
-    def get_saldo(self):
-        return self.saldo
-
-    def set_saldo(self, novo_saldo):
-        self.saldo = novo_saldo
-
-    def set_mao(self, mao_jogador):
-        self.mao = mao_jogador
-
-    def get_mao(self):
-        return self.mao
-
-

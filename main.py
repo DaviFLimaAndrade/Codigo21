@@ -20,14 +20,14 @@ def realizar_apostas(jogadores):
     try:
         for jogador in jogadores:
             print('-' * 60)
-            print(f"\nOlá {jogador.get_nome()}, você tem {jogador.get_saldo()} klebinhos.")
+            print(f"\nOlá {jogador.nome}, você tem {jogador.saldo} klebinhos.")
 
             # Permitindo que o jogador decida quantas fichas comprar e adicione ao seu personagem
             fichas_comprar = int(input("Quantas fichas você deseja comprar? "))
             valor_fichas = 10 * fichas_comprar
 
-            if valor_fichas <= jogador.get_saldo():
-                jogador.set_saldo(jogador.get_saldo() - valor_fichas)
+            if valor_fichas <= jogador.saldo:
+                jogador.saldo -= valor_fichas
                 print('''
                                                 ###                                          ###
                                                  ##                                           ##
@@ -39,75 +39,84 @@ def realizar_apostas(jogadores):
                     ''')
                 print('-' * 60)
                 print(f"Você comprou {fichas_comprar} fichas.")
-                print(f"Agora você tem {fichas_comprar * 10} fichas e {jogador.get_saldo()} klebinhos restantes.")
+                print(f"Agora você tem {fichas_comprar * 10} fichas e {jogador.saldo} klebinhos restantes.")
                 print(""
                       ""
                       "")
             else:
                 print("Saldo insuficiente para comprar essa quantidade de fichas.")
     except ValueError:
-        print("Insira um numero inteiro")
+        print("Insira um número inteiro")
+
 
 
 import random
 
-
 def sorteio_e_vencedores(jogadores):
-    cartas = [2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10, 11]
-    total_mao = 0
-    pontuacoes_validas = {}
-    todos_pararam = False
-    contador = 1
+    def calcular_pontuacao(mao):
+        return sum(mao)
 
+    def determinar_vencedor(pontuacoes):
+        pontuacoes_validas = [pontuacao for pontuacao in pontuacoes if pontuacao <= 21]
 
-    while not todos_pararam:
-        todos_pararam = True  # Supõe que todos pararam, mas verificamos abaixo
+        if not pontuacoes_validas:
+            return None
 
-        for jogador in jogadores:
-            mao_jogador = jogador.get_mao()
-            # tem que começar com 2 cartas
-            print(f"{jogador.get_nome()}, sua mão inicial é: {mao_jogador}")
+        return max(pontuacoes_validas)
 
-            opcao = int(input(f"{jogador.get_nome()}, Deseja comprar mais cartas? "
+    for jogador in jogadores:
+        mao_jogador = jogador.mao
+        print(f"{jogador.nome}, sua mão inicial é: {mao_jogador}")
+        parou = False
+
+        while not parou:
+            opcao = int(input(f"{jogador.nome}, Deseja comprar mais cartas? "
                               "\n1: Sim"
                               "\n2: Não"
                               "\nDigite: "))
 
-            if opcao == 1 and total_mao <= 21:
-                carta = random.choice(cartas)
-                mao_jogador.append(carta)
-                jogador.set_mao(mao_jogador)
+            if opcao == 1 and calcular_pontuacao(mao_jogador) <= 21:
+                baralho = {'A': 1, 'Q': 10, 'J': 10, 'K': 10,
+                           '2': 2, '3': 3, '4': 4, '5': 5, '6': 6,
+                           '7': 7, '8': 8, '9': 9}
+                carta = random.choice(list(baralho.keys()))
+                mao_jogador.append(baralho[carta])
+                jogador._mao = mao_jogador
 
-                total_mao = sum(mao_jogador)
-                print(f"{jogador.get_nome()}, sua mão atual é: {total_mao}")
+                total_mao = calcular_pontuacao(mao_jogador)
+                print(f"{jogador.nome}, sua mão atual é: {total_mao}")
 
-                pontuacoes_validas[jogador.get_nome()] = total_mao
-                todos_pararam = False  # Se alguém comprou, definimos como False
-                print(pontuacoes_validas)
-                contador += 1
+                if total_mao > 21:
+                    print(f"{jogador.nome} estourou com {total_mao} pontos!")
+                    break
+            else:
+                parou = True
 
+    pontuacoes = [calcular_pontuacao(jogador.mao) for jogador in jogadores]
+    vencedor = determinar_vencedor(pontuacoes)
 
-            if total_mao > 21 and contador == 2:
-                pass
-            elif total_mao > 21 and contador > 2:
-                todos_pararam = True
-                break
-
-    if not pontuacoes_validas:
+    if vencedor is None:
         print("Todos os jogadores ultrapassaram 21! Não há vencedor nesta rodada.")
     else:
-        pontuacao_maxima = max(pontuacoes_validas.values())
-        vencedores = [nome for nome, pontuacao in pontuacoes_validas.items() if pontuacao == pontuacao_maxima]
+        vencedor_nome = [jogador.nome for jogador in jogadores if calcular_pontuacao(jogador.mao) == vencedor][0]
+        print(f"{vencedor_nome} venceu com {vencedor} pontos!")
 
-        if len(vencedores) == 1:
-            print(f"{vencedores[0]} venceu com {pontuacao_maxima} pontos!")
-        else:
-            print("Empate! Os vencedores são:")
-            for vencedor in vencedores:
-                print(f"- {vencedor} com {pontuacao_maxima} pontos")
+# Restante do código permanece igual
 
 
-# Restante do código para criar jogadores, realizar apostas, etc.
+'''ele pergunta uma vez a cada jogador pois o jogo pressupoe que os mesmos não saibam 
+    a mao um do outro assim como é no 21 real'''
+
+
+
+
+
+
+
+
+
+
+
 
 
 if __name__ == "__main__":
