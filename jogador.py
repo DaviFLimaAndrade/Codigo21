@@ -1,10 +1,9 @@
 import random
 
 class Jogador:
-    def __init__(self, nome, saldo, pontos):
+    def __init__(self, nome, saldo):
         self.nome = nome
         self._saldo = saldo
-        self.pontos = pontos
         self._mao = self.sorteio()
 
     @property
@@ -38,3 +37,4 @@ class Jogador:
             mao.append(carta)
 
         return mao
+
