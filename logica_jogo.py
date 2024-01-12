@@ -1,7 +1,7 @@
 import os
 import random
 from time import sleep
-from jogador import Jogador
+
 
 def sorteio_e_vencedores(jogadores):
     def calcular_pontuacao(mao):
@@ -14,7 +14,7 @@ def sorteio_e_vencedores(jogadores):
             return None
 
         return max(pontuacoes_validas)
-    
+
     
     for i in range(4):
             sleep(1)
@@ -26,6 +26,11 @@ def sorteio_e_vencedores(jogadores):
         mao_jogador = jogador.mao
         print(f"{jogador.nome}, sua mão inicial é: {mao_jogador}")
         parou = False
+
+        if jogador.ficha[0] > 0:
+            print("pode jogar")
+        else:
+            print("pode não jogado")
 
         while not parou:
             opcao = int(input(f"{jogador.nome}, Deseja comprar mais cartas? "
@@ -49,11 +54,11 @@ def sorteio_e_vencedores(jogadores):
                     break
             else:
                 parou = True
-                
+
         for i in range(4):
             sleep(1)
             print(".")
-            
+
         os.system("cls")
 
     pontuacoes = [calcular_pontuacao(jogador.mao) for jogador in jogadores]

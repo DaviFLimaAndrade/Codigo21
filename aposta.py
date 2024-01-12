@@ -9,7 +9,7 @@ def realizar_apostas(jogadores):
             while True:
                 fichas_comprar = int(input("Quantas fichas você deseja comprar? "))
                 valor_fichas = 10 * fichas_comprar
-                fichas.append(fichas_comprar)
+                fichas.append(valor_fichas)
 
                 if valor_fichas <= jogador.saldo:
                     jogador.saldo -= valor_fichas
@@ -29,7 +29,8 @@ def realizar_apostas(jogadores):
 
                     mais_fichas = input("Deseja comprar mais fichas? (S para Sim / N para Não): ").upper()
                     if mais_fichas != 'S':
-                        jogador.ficha = fichas
+                        jogador._fichas = fichas  # setando as valores na lista de fichas dos jogadores
+                        print(jogador.ficha)
                         break
                 else:
                     print("Saldo insuficiente para comprar essa quantidade de fichas.")
