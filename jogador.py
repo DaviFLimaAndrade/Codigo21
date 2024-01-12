@@ -1,10 +1,21 @@
+
 import random
 
+
 class Jogador:
-    def __init__(self, nome, saldo):
+    def __init__(self, nome, saldo, fichas):
         self.nome = nome
         self._saldo = saldo
+        self._fichas = fichas
         self._mao = self.sorteio()
+
+    @property
+    def ficha(self):
+        return self._fichas
+
+    @ficha.setter
+    def ficha(self, quantidade_fichas):
+        self._fichas = quantidade_fichas
 
     @property
     def nome(self):
@@ -18,13 +29,13 @@ class Jogador:
     def saldo(self):
         return self._saldo
 
-    @property
-    def mao(self):
-        return self._mao
-
     @saldo.setter
     def saldo(self, novo_saldo):
         self._saldo = novo_saldo
+
+    @property
+    def mao(self):
+        return self._mao
 
     def sorteio(self):
         baralho = {'A': 1, 'Q': 10, 'J': 10, 'K': 10,
@@ -37,4 +48,3 @@ class Jogador:
             mao.append(carta)
 
         return mao
-

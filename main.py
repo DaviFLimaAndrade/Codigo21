@@ -6,8 +6,8 @@ def menu():
     os.system("cls")
     print("Ola Guerreiros(as), tudo bem?")
     opcao = int(input("\n1: Jogar"
-                  "\n2: Ver ranking"
-                  "\nDigite: "))
+                      "\n2: Ver ranking"
+                      "\nDigite: "))
 
     if opcao == 1:
         print("")

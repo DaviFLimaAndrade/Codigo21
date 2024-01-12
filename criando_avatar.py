@@ -10,7 +10,7 @@ def criar_jogadores():
         nome = input("Insira o nome do titular da conta: ")
         saldo = float(input("Insira o valor para depositar na conta: "))
 
-        jogador = Jogador(nome, saldo)
+        jogador = Jogador(nome, saldo, fichas=0)
         jogadores.append(jogador)
         print('-' * 60)
 
