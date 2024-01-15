@@ -8,9 +8,9 @@ def criar_jogadores():
         print(f"CRIANDO CONTA JOGADOR {i + 1}".center(50))
         print()
         nome = input("Insira o nome do titular da conta: ")
-        saldo = float(input("Insira o valor para depositar na conta: "))
+        fichas = int(input("Insira a quantidade de fichas que deseja depositar: "))
 
-        jogador = Jogador(nome, saldo)
+        jogador = Jogador(nome, fichas)
         jogadores.append(jogador)
         print('-' * 60)
 

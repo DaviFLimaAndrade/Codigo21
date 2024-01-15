@@ -1,10 +1,9 @@
-import criando_avatar
-import aposta
-import logica_jogo
+from criando_avatar import criar_jogadores
+from logica_jogo import sorteio_e_vencedores
+from aposta import realizar_apostas
 
 def fluxo():
-    jogadores = criando_avatar.criar_jogadores()
-    aposta.realizar_apostas(jogadores)
-    logica_jogo.sorteio_e_vencedores(jogadores)
+    jogadores = criar_jogadores()
+    sorteio_e_vencedores(jogadores)
 
     print("acabou")
