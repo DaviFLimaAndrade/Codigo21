@@ -4,7 +4,7 @@ from time import sleep
 from aposta import realizar_apostas
 
 
-def sorteio_e_vencedores(jogadores):
+def sorteio_e_vencedores_robo(jogadores):
     def calcular_pontuacao(mao):
         return sum(mao)
 
@@ -31,9 +31,6 @@ def sorteio_e_vencedores(jogadores):
 
         os.system("clear" if os.name == "posix" else "cls")
 
-        # Realize as apostas no início de cada rodada
-        realizar_apostas(jogadores)
-
         for jogador in jogadores:
             mao_jogador = jogador.sorteio()
             print(f"{jogador.nome}, sua mão inicial é: {mao_jogador}")
@@ -41,6 +38,7 @@ def sorteio_e_vencedores(jogadores):
 
             while not parou:
                 try:
+
                     opcao = int(input(f"{jogador.nome}, Deseja comprar mais cartas? "
                                       "\n1: Sim"
                                       "\n2: Não"

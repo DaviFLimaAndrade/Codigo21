@@ -1,8 +1,13 @@
+from main import menu
+
 def realizar_apostas(jogadores):
     try:
         for jogador in jogadores:
             if jogador.ficha <= 0:
                 print("Suas fichas acabaram, agora seu terreno é nosso kkkk")
+                print("Voltou ao menu inicial")
+                print("-"*60)
+
             else:
                 print('-' * 60)
                 print(f"\nOlá {jogador.nome}, quantos klebinhos deseja apostar nesta rodada?")
