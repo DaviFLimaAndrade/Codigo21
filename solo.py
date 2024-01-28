@@ -1,106 +1,83 @@
-import os
 import random
-from time import sleep
-from aposta import realizar_apostas
-
+import os
+from robo import Robo
 
 def sorteio_e_vencedores_robo(jogadores):
+    global jogador
+    robo = Robo()
+
     def calcular_pontuacao(mao):
         return sum(mao)
 
-    def determinar_vencedor(pontuacoes):
-        pontuacoes_validas = [pontuacao for pontuacao in pontuacoes if pontuacao <= 21]
+    while True:
+        os.system("cls" if os.name == "nt" else "clear")
 
-        if not pontuacoes_validas:
-            return "Empate"
-
-        pontuacao_maxima = max(pontuacoes_validas)
-
-        if pontuacoes_validas.count(pontuacao_maxima) > 1:
-            empate_pontuacoes = [pontuacao for pontuacao in pontuacoes_validas if pontuacao == pontuacao_maxima]
-            return empate_pontuacoes
-
-        return pontuacao_maxima
-
-    continuar_jogando = True
-
-    while continuar_jogando:
-        '''for i in range(4):
-            sleep(1)
-            print(".")'''
-
-        os.system("clear" if os.name == "posix" else "cls")
 
         for jogador in jogadores:
             mao_jogador = jogador.sorteio()
-            print(f"{jogador.nome}, sua mão inicial é: {mao_jogador}")
-            parou = False
+            if sum(jogador.mao) <= 21:
+                print(f"{jogador.nome}, sua mão inicial é: {mao_jogador}\n")
 
-            while not parou:
-                try:
+        mao_robo = robo.sorteio()
+        robo.mao = mao_robo
+        print(f"{robo.nome} sua mão inicial é: {mao_robo}\n")
 
-                    opcao = int(input(f"{jogador.nome}, Deseja comprar mais cartas? "
-                                      "\n1: Sim"
-                                      "\n2: Não"
-                                      "\nDigite: "))
-                except ValueError:
-                    print("Por favor, insira um número inteiro.")
-                    continue
+        while True:
+            opcao = int(input(f"{jogador.nome}, Deseja comprar mais cartas? "
+                              "\n1: Sim"
+                              "\n2: Não"
+                              "\nDigite: "))
 
-                if opcao == 1 and calcular_pontuacao(mao_jogador) <= 21:
-                    baralho = {
-                        'zap_A': 1, 'ouro_A': 1, 'copas_A': 1, 'espadilha_A': 1,
-                        'zap_2': 2, 'ouro_2': 2, 'copas_2': 2, 'espadilha_2': 2,
-                        'zap_3': 3, 'ouro_3': 3, 'copas_3': 3, 'espadilha_3': 3,
-                        'zap_4': 4, 'ouro_4': 4, 'copas_4': 4, 'espadilha_4': 4,
-                        'zap_5': 5, 'ouro_5': 5, 'copas_5': 5, 'espadilha_5': 5,
-                        'zap_6': 6, 'ouro_6': 6, 'copas_6': 6, 'espadilha_6': 6,
-                        'zap_7': 7, 'ouro_7': 7, 'copas_7': 7, 'espadilha_7': 7,
-                        'zap_8': 8, 'ouro_8': 8, 'copas_8': 8, 'espadilha_8': 8,
-                        'zap_9': 9, 'ouro_9': 9, 'copas_9': 9, 'espadilha_9': 9,
-                        'zap_10': 10, 'ouro_10': 10, 'copas_10': 10, 'espadilha_10': 10,
-                        'zap_J': 10, 'ouro_J': 10, 'copas_J': 10, 'espadilha_J': 10,
-                        'zap_Q': 10, 'ouro_Q': 10, 'copas_Q': 10, 'espadilha_Q': 10,
-                        'zap_K': 10, 'ouro_K': 10, 'copas_K': 10, 'espadilha_K': 10,
-                    }
+            if opcao == 1 and calcular_pontuacao(jogador.mao) <= 21:
+                baralho = {
+                    'zap_A': 1, 'ouro_A': 1, 'copas_A': 1, 'espadilha_A': 1,
+                    'zap_2': 2, 'ouro_2': 2, 'copas_2': 2, 'espadilha_2': 2,
+                    'zap_3': 3, 'ouro_3': 3, 'copas_3': 3, 'espadilha_3': 3,
+                    'zap_4': 4, 'ouro_4': 4, 'copas_4': 4, 'espadilha_4': 4,
+                    'zap_5': 5, 'ouro_5': 5, 'copas_5': 5, 'espadilha_5': 5,
+                    'zap_6': 6, 'ouro_6': 6, 'copas_6': 6, 'espadilha_6': 6,
+                    'zap_7': 7, 'ouro_7': 7, 'copas_7': 7, 'espadilha_7': 7,
+                    'zap_8': 8, 'ouro_8': 8, 'copas_8': 8, 'espadilha_8': 8,
+                    'zap_9': 9, 'ouro_9': 9, 'copas_9': 9, 'espadilha_9': 9,
+                    'zap_10': 10, 'ouro_10': 10, 'copas_10': 10, 'espadilha_10': 10,
+                    'zap_J': 10, 'ouro_J': 10, 'copas_J': 10, 'espadilha_J': 10,
+                    'zap_Q': 10, 'ouro_Q': 10, 'copas_Q': 10, 'espadilha_Q': 10,
+                    'zap_K': 10, 'ouro_K': 10, 'copas_K': 10, 'espadilha_K': 10,
+                }
 
-                    carta = random.choice(list(baralho.keys()))
-                    mao_jogador.append(baralho[carta])
-                    jogador.mao = mao_jogador
+                carta = random.choice(list(baralho.keys()))
+                jogador.mao.append(baralho[carta])
+                total_mao = calcular_pontuacao(jogador.mao)
+                total_mao_robo = robo.decidir_parada()
 
-                    total_mao = calcular_pontuacao(mao_jogador)
-                    print(f"{jogador.nome}, sua mão atual é: {total_mao}\n")
-                    print('-'*60)
+                print(f"{jogador.nome}, sua mão atual é: {total_mao}\n")
+                print(f"{robo.nome}, sua mão atual é: {sum(robo.mao)}\n")
+                print('-' * 60)
 
-                    if total_mao > 21:
-                        print(f"{jogador.nome} estourou com {total_mao} pontos!\n")
-                        print('-' * 60)
-                        break
-                else:
-                    parou = True
+                if total_mao > 21 or sum(mao_robo) > 21:
+                    print(f"{jogador.nome} estourou com {total_mao} pontos!\n")
+                    print(f"{robo.nome} ganhou")
+                    break
+            elif opcao == 2:
+                break
 
-            '''for i in range(4):
-                sleep(1)
-                print(".")'''
+        total_mao_jogador = calcular_pontuacao(jogador.mao)
+        total_mao_robo = calcular_pontuacao(mao_robo)
 
-            os.system("clear" if os.name == "posix" else "cls")
+        print(f"Pontuação final: {jogador.nome}: {total_mao_jogador}, {robo.nome}: {sum(robo.mao)}")
 
-        pontuacoes = [calcular_pontuacao(jogador.mao) for jogador in jogadores]
-        vencedor = determinar_vencedor(pontuacoes)
-
-        if vencedor == "Empate":
-            print("Empate! Nenhum jogador venceu.")
-        elif isinstance(vencedor, list):
-            empate_pontuacoes = ", ".join(map(str, vencedor))
-            print(f"Empate entre as pontuações: {empate_pontuacoes}, ninguém ganhou nada")
+        if total_mao_jogador > 21:
+            print(f"{robo.nome} ganhou")
+        elif total_mao_robo > 21:
+            print(f"{jogador.nome} ganhou")
+        elif total_mao_jogador > sum(robo.mao):
+            print(f"{jogador.nome} ganhou")
+        elif total_mao_robo > sum(robo.mao):
+            print(f"{robo.nome} ganhou")
         else:
-            vencedor_objeto = [jogador for jogador in jogadores if calcular_pontuacao(jogador.mao) == vencedor][0]
-            vencedor_objeto.ficha += sum(jogador.aposta for jogador in jogadores)
-            print(f"\n{vencedor_objeto.nome} venceu com {vencedor} pontos!\n")
-            print(f"{vencedor_objeto.nome} agora possui {vencedor_objeto.ficha} fichas!\n")
+            print("Empate")
 
-        # Verifica se os jogadores desejam continuar jogando
-        resposta = input("Deseja continuar jogando? (S para Sim / N para Não): ").upper()
-        continuar_jogando = resposta == 'S'
-
-    print("Jogo encerrado.")
+        novo_jogo = input("Deseja iniciar uma nova rodada? (s/n): ")
+        if novo_jogo.lower() != 's':
+            print("Jogo encerrado.")
+            break
