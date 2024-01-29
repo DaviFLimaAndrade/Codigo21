@@ -68,7 +68,7 @@ def sorteio_e_vencedores_robo(jogadores):
 
         if total_mao_jogador > 21:
             print(f"{robo.nome} ganhou")
-        elif total_mao_robo > 21:
+        elif sum(robo.mao) > 21:
             print(f"{jogador.nome} ganhou")
         elif total_mao_jogador > sum(robo.mao):
             print(f"{jogador.nome} ganhou")

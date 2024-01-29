@@ -104,5 +104,9 @@ def sorteio_e_vencedores(jogadores):
         # Verifica se os jogadores desejam continuar jogando
         resposta = input("Deseja continuar jogando? (S para Sim / N para Não): ").upper()
         continuar_jogando = resposta == 'S'
+    
+    # fazer um ranking jogadores
+    for jogador in jogadores:
+        print(f"\n{jogador.nome} com {jogador.ficha}\n")
 
     print("Jogo encerrado.")
